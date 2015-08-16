@@ -33,6 +33,10 @@ angular.module('youtubeCommentApp').controller('WatchCtrl', function (
 			height: '390',
 			width: '640',
 			videoId: $scope.video.id,
+			playerVars: {
+				autoplay: 1,
+				showinfo: 0
+			},
 			events: {
 				onReady       : onPlayerReady,
 				onStateChange : onPlayerStateChange

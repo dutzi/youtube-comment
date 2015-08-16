@@ -9,7 +9,9 @@ angular.module('youtubeCommentApp').controller('WatchCtrl', function (
 	var player;
 
 	$scope.seperatorTop = 384;
-	
+	$scope.windowHeight = window.innerHeight;
+	$scope.segmentDuration = 30;
+
 	$scope.video = {
 		id     : $location.search().v || 'fUwnA4-cfiA',
 		width  : 640,
@@ -20,8 +22,15 @@ angular.module('youtubeCommentApp').controller('WatchCtrl', function (
 		console.log(data);
 	});
 
+	function initSegments() {
+		$scope.segments = new Array(Math.floor(player.getDuration() /
+			$scope.segmentDuration));
+	}
+
 	function onPlayerReady() {
 		onResize();
+		initSegments();
+		$scope.$digest();
 	}
 
 	function onPlayerStateChange() {
@@ -49,7 +58,11 @@ angular.module('youtubeCommentApp').controller('WatchCtrl', function (
 		$scope.video.height = $scope.seperatorTop - 24;
 		$scope.video.width = $scope.video.height * 16 / 9;
 		player.setSize($scope.video.width, $scope.video.height);
+		$scope.windowHeight = window.innerHeight;
+		$scope.$digest();
 	}
+
+	window.addEventListener('resize', onResize);
 
 	$scope.onResizeMouseDown = function(e) {
 		var startY = e.offsetY;
@@ -58,6 +71,7 @@ angular.module('youtubeCommentApp').controller('WatchCtrl', function (
 		function onMouseUp() {
 			document.removeEventListener('mousemove', onMouseMove);
 			document.removeEventListener('mouseup', onMouseUp);
+			document.body.classList.remove('noselect');
 			$scope.isResizing = false;
 
 			$scope.$digest();
@@ -72,5 +86,6 @@ angular.module('youtubeCommentApp').controller('WatchCtrl', function (
 
 		document.addEventListener('mousemove', onMouseMove);
 		document.addEventListener('mouseup', onMouseUp);
+		document.body.classList.add('noselect');
 	}
 });

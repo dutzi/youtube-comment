@@ -25,3 +25,30 @@
 	left: 0px;
 	top: 0px;
 }
+
+.segments {
+	position: absolute;
+	display: flex;
+	width: 100%;
+	overflow: scroll;
+	border-top: 1px solid #eee;
+
+	.ticks {
+		background-image: url('/assets/images/ticks.png');
+		background-repeat: repeat-x;
+		height: 10px;
+		position: absolute;
+		z-index: -1;
+	}
+
+	.segment {
+		flex: 0 0 300px;
+		border-left: 1px solid #eee;
+
+		.segment-time {
+			margin: 13px 0 0 8px;
+			font-size: 0.85em;
+			color: #aaa;
+		}
+	}
+}

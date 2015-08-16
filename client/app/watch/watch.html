@@ -7,10 +7,16 @@
 </div>
 <div class="segments" style="top: {{ seperatorTop + 20 }}px; height: {{ windowHeight - seperatorTop - 20 }}px">
 
-	<div class="timeline-progress-bar" style="width: {{ progressBarWidth }}px">
+	<div class="timeline-progress-bar" 
+		style="width: {{ progressBarWidth }}px" 
+		ng-mousemove="onProgressMouseMove($event)"
+		ng-mouseover="onProgressMouseOver($event)"
+		ng-mouseout="onProgressMouseOut($event)">
+
 		<div class="load-progress" style="width: {{ video.loadProgress }}%"></div>
-		<div class="hover-progress" style="width: 0%"></div>
 		<div class="play-progress" style="width: {{ video.playProgress }}%"></div>
+		<div class="hover-progress" ng-style="progressBarHoverStyle" 
+			ng-show="isHoveringProgressBar"></div>
 	</div>
 
 	<div class="ticks" style="width: {{ segments.length * 300 }}px"></div>

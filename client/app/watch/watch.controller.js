@@ -7,6 +7,7 @@ angular.module('youtubeCommentApp').controller('WatchCtrl', function (
 	$interval,
 	youtube
 ) {
+	var $ = document.querySelector.bind(document);
 
 	var player;
 	var playerReady = $q.defer();
@@ -84,7 +85,12 @@ angular.module('youtubeCommentApp').controller('WatchCtrl', function (
 		playerReady.resolve();
 	}
 
+	/******************************/
+	/******** Progress Bar ********/
+	/******************************/
+
 	var videoUpdateInterval;
+
 	function addPlaybackEventListeners() {
 		videoUpdateInterval = $interval(function () {
 
@@ -94,8 +100,13 @@ angular.module('youtubeCommentApp').controller('WatchCtrl', function (
 			$scope.video.playProgress = player.getCurrentTime() /
 				player.getDuration() * 100;
 
+			if ($scope.isHoveringProgressBar) {
+				updateProgressBarHoverPosition();
+			}
+
 		}, 100);
 	}
+
 	function removePlaybackEventListeners() {
 		$interval.cancel(videoUpdateInterval);
 	}
@@ -114,7 +125,41 @@ angular.module('youtubeCommentApp').controller('WatchCtrl', function (
 
 			break;
 		}
-		// console.log('sc', e);
+	}
+
+	var pageX
+	function updateProgressBarHoverPosition() {
+		var absX = $('.segments').scrollLeft + pageX,
+		    playProgressWidth = $('.play-progress').offsetWidth;
+
+		if (absX > playProgressWidth) {
+			$scope.progressBarHoverStyle = {
+				left: playProgressWidth + 'px',
+				width: absX - playProgressWidth + 'px'
+			}
+		} else {
+			$scope.progressBarHoverStyle = {
+				left: absX + 'px',
+				width: playProgressWidth - absX + 'px'
+			}
+		}
+	}
+
+	$scope.onProgressMouseMove = function(e) {
+		pageX = e.pageX;
+		updateProgressBarHoverPosition();
+	}
+
+	$scope.onProgressMouseOver = function(e) {
+		pageX = e.pageX;
+		$scope.isHoveringProgressBar = true;
+		console.log('mouse over');
+	}
+
+	$scope.onProgressMouseOut = function(e) {
+		pageX = e.pageX;
+		$scope.isHoveringProgressBar = false;
+		console.log('mouse out');
 	}
 
 	window.onYouTubeIframeAPIReady = function() {

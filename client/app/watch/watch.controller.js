@@ -66,6 +66,11 @@ angular.module('youtubeCommentApp').controller('WatchCtrl', function (
 		$scope.segments = new Array(Math.floor(player.getDuration() /
 			$scope.segmentDuration) + 1);
 
+		// 300 is a segments fixed width, as set in `watch.scss`
+		// 
+		var pixelsPerSecond = 300 / $scope.segmentDuration;
+		$scope.progressBarWidth = pixelsPerSecond * player.getDuration();
+
 		for (var i = 0; i < $scope.segments.length; i++) {
 			$scope.segments[i] = [];
 		}

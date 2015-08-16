@@ -4,6 +4,7 @@ angular.module('youtubeCommentApp').controller('WatchCtrl', function (
 	$scope, 
 	$location,
 	$q,
+	$interval,
 	youtube
 ) {
 
@@ -78,12 +79,41 @@ angular.module('youtubeCommentApp').controller('WatchCtrl', function (
 		playerReady.resolve();
 	}
 
-	function onPlayerStateChange() {
+	var videoUpdateInterval;
+	function addPlaybackEventListeners() {
+		videoUpdateInterval = $interval(function () {
 
+			$scope.video.loadProgress = player.getVideoBytesLoaded() /
+				player.getVideoBytesTotal() * 100;
+
+			$scope.video.playProgress = player.getCurrentTime() /
+				player.getDuration() * 100;
+
+		}, 100);
+	}
+	function removePlaybackEventListeners() {
+		$interval.cancel(videoUpdateInterval);
+	}
+
+	function onPlayerStateChange(e) {
+		switch(e.data) {
+			// Playing
+			case 1:
+				addPlaybackEventListeners();
+			break;
+
+			// Ended or Paused
+			case 0:
+			case 2:
+				removePlaybackEventListeners();
+
+			break;
+		}
+		// console.log('sc', e);
 	}
 
 	window.onYouTubeIframeAPIReady = function() {
-		player = new YT.Player('player', {
+		window.player = player = new YT.Player('player', {
 			height: '390',
 			width: '640',
 			videoId: $scope.video.id,

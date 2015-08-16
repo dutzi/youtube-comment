@@ -16,6 +16,7 @@
 
 .player-container {
 	margin: auto;
+    margin-top: 20px;
 }
 
 .resize-overlay {
@@ -33,10 +34,35 @@
 	overflow: scroll;
 	border-top: 1px solid #eee;
 
+	.timeline-progress-bar {
+		position: absolute;
+	    height: 6px;
+	    background-color: #f7f7f7;
+
+		.play-progress {
+			position: absolute;
+			height: 100%;
+			background-color: #f12b24;
+		}
+
+		.load-progress {
+			position: absolute;
+			height: 100%;
+			background-color: #eee;
+		}
+		.hover-progress {
+			position: absolute;
+			height: 100%;
+			background-color: #ddd;
+		}
+
+	}
+
 	.ticks {
 		background-image: url('/assets/images/ticks.png');
 		background-repeat: repeat-x;
 		height: 10px;
+		top: 7px;
 		position: absolute;
 		z-index: -1;
 	}
@@ -45,6 +71,7 @@
 		flex: 0 0 300px;
 		border-left: 1px solid #eee;
 		display: flex;
+		margin-top: 8px;
 		flex-direction: column;
 
 		.segment-time {

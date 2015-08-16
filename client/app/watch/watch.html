@@ -1,4 +1,3 @@
-<div class="col-md-12">You're watching {{ video.id }}</div>
 <div class="player-container" style="width: {{ video.width }}px">
 	<div id="player"></div>
 </div>
@@ -7,7 +6,15 @@
 	<div class="seperator-img"></div>
 </div>
 <div class="segments" style="top: {{ seperatorTop + 20 }}px; height: {{ windowHeight - seperatorTop - 20 }}px">
+
+	<div class="timeline-progress-bar" style="width: {{ segments.length * 300 }}px">
+		<div class="load-progress" style="width: {{ video.loadProgress }}%"></div>
+		<div class="hover-progress" style="width: 0%"></div>
+		<div class="play-progress" style="width: {{ video.playProgress }}%"></div>
+	</div>
+
 	<div class="ticks" style="width: {{ segments.length * 300 }}px"></div>
+
 	<div class="segment" ng-repeat="segment in segments track by $index">
 		<div class="segment-time">{{ $index * segmentDuration | time }}</div>
 		<div class="segment-comments">
@@ -29,4 +36,5 @@
 			</div>
 		</div>
 	</div>
+
 </div>

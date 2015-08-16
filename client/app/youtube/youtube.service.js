@@ -11,7 +11,8 @@ angular.module('youtubeCommentApp').service('youtube', function (
 			return $http({
 				url: `${baseUrl}commentThreads`,
 				params: {
-					part: 'snippet',
+					part: 'snippet,replies',
+					maxResults: 100,
 					videoId: videoId,
 					key: KEY
 				}

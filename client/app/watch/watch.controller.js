@@ -3,10 +3,12 @@
 angular.module('youtubeCommentApp').controller('WatchCtrl', function (
 	$scope, 
 	$location,
+	$q,
 	youtube
 ) {
 
 	var player;
+	var playerReady = $q.defer();
 
 	$scope.seperatorTop = 384;
 	$scope.windowHeight = window.innerHeight;
@@ -17,20 +19,63 @@ angular.module('youtubeCommentApp').controller('WatchCtrl', function (
 		width  : 640,
 		height : 360
 	};
+
+	function getTime(time) {
+		var hours = 0;
+
+		return time.match(/(?:(\d+)h|)(\d+)m(\d+)s/)
+			.filter((_, index) => index >= 2)
+			.map((d) => parseInt(d))
+			.reverse()
+			.reduce((prev, current, index) => {
+				return prev + current * Math.pow(60, index);
+			});
+	}
+
+	function getSegment(time) {
+		return $scope.segments[Math.floor(time / $scope.segmentDuration)];
+	}
 	
-	youtube.getComments($scope.video.id).then(function (data) {
-		console.log(data);
+	$q.all([
+		youtube.getComments($scope.video.id),
+		playerReady.promise
+	]).then(function (data) {
+		$scope.comments = data = data[0].data.items;
+
+		// TODO - use regexp
+		// 
+		var timeRx = '<a href=\"http://www.youtube.com/watch?v=' + 
+			$scope.video.id + '&amp;t=';
+
+		for (var i = 0; i < data.length; i++) {
+			var text = data[i].snippet.topLevelComment.snippet.textDisplay;
+			if (text.indexOf(timeRx) > -1) {
+				var time = text.substr(text.indexOf(timeRx) + timeRx.length);
+				time = time.substr(0, time.indexOf('"'));
+
+				getSegment(getTime(time)).push(data[i]);
+			}
+		}
+
+		console.log($scope.comments);
+		console.log($scope.segments);
 	});
 
 	function initSegments() {
 		$scope.segments = new Array(Math.floor(player.getDuration() /
-			$scope.segmentDuration));
+			$scope.segmentDuration) + 1);
+
+		for (var i = 0; i < $scope.segments.length; i++) {
+			$scope.segments[i] = [];
+		}
 	}
 
 	function onPlayerReady() {
 		onResize();
 		initSegments();
 		$scope.$digest();
+
+		playerReady.resolve();
 	}
 
 	function onPlayerStateChange() {

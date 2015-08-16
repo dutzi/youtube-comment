@@ -10,9 +10,22 @@
 	<div class="ticks" style="width: {{ segments.length * 300 }}px"></div>
 	<div class="segment" ng-repeat="segment in segments track by $index">
 		<div class="segment-time">{{ $index * segmentDuration | time }}</div>
-		<div class="segemnt-comments">
-			<div class="comment" ng-repeat="comment in segment.comments">
-				{{ comment.text }}
+		<div class="segment-comments">
+			<div class="segment-comments-comment" ng-repeat="comment in segment">
+				<a class="comment-avatar" href="{{comment.snippet.topLevelComment.snippet.authorGoogleplusProfileUrl}}">
+					<img class="comment-avatar-image" src="{{comment.snippet.topLevelComment.snippet.authorProfileImageUrl}}">
+				</a>
+				<div class="comment-text" ng-bind-html="comment.snippet.topLevelComment.snippet.textDisplay"></div>
+				<div class="clearfix"></div>
+				<div class="comment-replies">
+					<div class="comment-replies-reply" ng-repeat="reply in comment.replies.comments">
+						<a class="comment-avatar" href="{{reply.snippet.authorGoogleplusProfileUrl}}">
+							<img class="comment-avatar-image" src="{{reply.snippet.authorProfileImageUrl}}">
+						</a>
+						<div class="reply-text" ng-bind-html="reply.snippet.textDisplay"></div>
+						<div class="clearfix"></div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

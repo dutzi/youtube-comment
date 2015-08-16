@@ -44,11 +44,45 @@
 	.segment {
 		flex: 0 0 300px;
 		border-left: 1px solid #eee;
+		display: flex;
+		flex-direction: column;
 
 		.segment-time {
 			margin: 13px 0 0 8px;
 			font-size: 0.85em;
 			color: #aaa;
+		}
+
+		.segment-comments {
+			flex: 1;
+			overflow: scroll;		
+
+			.segment-comments-comment {
+				border: 1px solid #ddd;
+				margin: 8px;
+				border-radius: 3px;
+				padding: 6px 10px;
+				font-size: 0.9em;
+				overflow: hidden;
+
+				.comment-avatar {
+					.comment-avatar-image {
+						vertical-align: middle;
+						width: 30px;
+						float: left;
+						margin: 2px 8px 0px 0px;
+					}
+				}
+
+				.comment-replies {
+					margin: 10px -10px -6px;
+
+					.comment-replies-reply {
+						padding: 10px;
+						border-top: 1px solid #ddd;
+					}
+				}
+			}
 		}
 	}
 }

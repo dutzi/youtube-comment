@@ -1,0 +1,27 @@
+.seperator {
+	position: absolute;
+	width: 100%;
+	left: 0px;
+	padding: 6px 0px;
+	cursor: ns-resize;
+
+	.seperator-img {
+		pointer-events: none;
+		background-image: url('/assets/images/seperator.png');
+		width: 39px;
+		margin: auto;
+		height: 7px;
+	}
+}
+
+.player-container {
+	margin: auto;
+}
+
+.resize-overlay {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	left: 0px;
+	top: 0px;
+}

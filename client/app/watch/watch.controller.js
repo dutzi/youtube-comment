@@ -1,13 +1,24 @@
 'use strict';
 
-angular.module('youtubeCommentApp').controller('WatchCtrl', function ($scope, $location) {
+angular.module('youtubeCommentApp').controller('WatchCtrl', function (
+	$scope, 
+	$location,
+	youtube
+) {
+
+	var player;
+
+	$scope.seperatorTop = 384;
+	
 	$scope.video = {
 		id     : $location.search().v || 'fUwnA4-cfiA',
 		width  : 640,
 		height : 360
 	};
-	$scope.seperatorTop = 384;
-	var player;
+	
+	youtube.getComments($scope.video.id).then(function (data) {
+		console.log(data);
+	});
 
 	function onPlayerReady() {
 		onResize();

@@ -6,6 +6,8 @@ angular.module('youtubeCommentApp').service('youtube', function (
 	const KEY = 'AIzaSyCnvekvymQwGgtRuntaqAF_jzuzwJHvNkM';
 	const baseUrl = 'https://www.googleapis.com/youtube/v3/';
 
+	// TODO - Handle paging
+
 	return {
 		getComments(videoId) {
 			return $http({

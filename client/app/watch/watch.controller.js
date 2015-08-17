@@ -77,14 +77,6 @@ angular.module('youtubeCommentApp').controller('WatchCtrl', function (
 		}
 	}
 
-	function onPlayerReady() {
-		onResize();
-		initSegments();
-		$scope.$digest();
-
-		playerReady.resolve();
-	}
-
 	/******************************/
 	/******** Progress Bar ********/
 	/******************************/
@@ -97,8 +89,10 @@ angular.module('youtubeCommentApp').controller('WatchCtrl', function (
 			$scope.video.loadProgress = player.getVideoBytesLoaded() /
 				player.getVideoBytesTotal() * 100;
 
-			$scope.video.playProgress = player.getCurrentTime() /
-				player.getDuration() * 100;
+			if (!$scope.isScrubbing) {
+				$scope.video.playProgress = player.getCurrentTime() /
+					player.getDuration() * 100;
+			}
 
 			if ($scope.isHoveringProgressBar) {
 				updateProgressBarHoverPosition();
@@ -115,13 +109,11 @@ angular.module('youtubeCommentApp').controller('WatchCtrl', function (
 		switch(e.data) {
 			// Playing
 			case 1:
-				addPlaybackEventListeners();
 			break;
 
 			// Ended or Paused
 			case 0:
 			case 2:
-				removePlaybackEventListeners();
 
 			break;
 		}
@@ -146,6 +138,7 @@ angular.module('youtubeCommentApp').controller('WatchCtrl', function (
 	}
 
 	$scope.onProgressMouseDown = function(e) {
+		var wasPausedBeforeScrubbing = player.getPlayerState() === 2;
 		$scope.isScrubbing = true;
 		player.pauseVideo();
 		document.body.classList.add('noselect');
@@ -155,11 +148,13 @@ angular.module('youtubeCommentApp').controller('WatchCtrl', function (
 			    percentage = absX / $scope.progressBarWidth;
 
 			player.seekTo(percentage * player.getDuration());
+
+			$scope.video.playProgress = percentage * 100;
 		}
 
 		function onMouseUp(e) {
 			$scope.isScrubbing = false;
-			player.playVideo();
+			if (!wasPausedBeforeScrubbing) player.playVideo();
 			$scope.$digest();
 
 			seekByPageX(e.pageX);
@@ -202,7 +197,12 @@ angular.module('youtubeCommentApp').controller('WatchCtrl', function (
 				showinfo: 0
 			},
 			events: {
-				onReady       : onPlayerReady,
+				onReady       : function () {
+					onResize();
+					initSegments();
+					addPlaybackEventListeners();
+					playerReady.resolve();
+				},
 				onStateChange : onPlayerStateChange
 			}
 		});

@@ -153,13 +153,11 @@ angular.module('youtubeCommentApp').controller('WatchCtrl', function (
 	$scope.onProgressMouseOver = function(e) {
 		pageX = e.pageX;
 		$scope.isHoveringProgressBar = true;
-		console.log('mouse over');
 	}
 
 	$scope.onProgressMouseOut = function(e) {
 		pageX = e.pageX;
 		$scope.isHoveringProgressBar = false;
-		console.log('mouse out');
 	}
 
 	window.onYouTubeIframeAPIReady = function() {

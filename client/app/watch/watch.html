@@ -5,7 +5,7 @@
 <div class="seperator" ng-mousedown="onResizeMouseDown($event)" style="top: {{ seperatorTop }}px">
 	<div class="seperator-img"></div>
 </div>
-<div class="segments" style="top: {{ seperatorTop + 20 }}px; height: {{ windowHeight - seperatorTop - 20 }}px">
+<div class="segments" style="top: {{ seperatorTop + 13 }}px; height: {{ windowHeight - seperatorTop - 13 }}px">
 
 	<div class="timeline-progress-bar" 
 		style="width: {{ progressBarWidth }}px" 
@@ -13,6 +13,7 @@
 		ng-mouseover="onProgressMouseOver($event)"
 		ng-mouseout="onProgressMouseOut($event)">
 
+		<div class="progress-bg"></div>
 		<div class="load-progress" style="width: {{ video.loadProgress }}%"></div>
 		<div class="play-progress" style="width: {{ video.playProgress }}%"></div>
 		<div class="hover-progress" ng-style="progressBarHoverStyle" 
@@ -25,9 +26,14 @@
 		<div class="segment-time">{{ $index * segmentDuration | time }}</div>
 		<div class="segment-comments">
 			<div class="segment-comments-comment" ng-repeat="comment in segment">
-				<a class="comment-avatar" href="{{comment.snippet.topLevelComment.snippet.authorGoogleplusProfileUrl}}">
-					<img class="comment-avatar-image" src="{{comment.snippet.topLevelComment.snippet.authorProfileImageUrl}}">
+
+				<a class="comment-avatar" 
+					href="{{comment.snippet.topLevelComment.snippet.authorGoogleplusProfileUrl}}">
+
+					<img class="comment-avatar-image" 
+						src="{{comment.snippet.topLevelComment.snippet.authorProfileImageUrl}}">
 				</a>
+				
 				<div class="comment-text" ng-bind-html="comment.snippet.topLevelComment.snippet.textDisplay"></div>
 				<div class="clearfix"></div>
 				<div class="comment-replies">

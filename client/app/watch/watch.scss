@@ -125,3 +125,57 @@
 		}
 	}
 }
+
+.timeline-controls {
+	position: fixed;
+	width: 70px;
+	height: 50px;
+	background: linear-gradient(white 0%, #f7f7f7 100%);
+	z-index: 1000;
+	margin-top: 21px;
+	margin-left: -35px;
+	border: 1px solid #eee;
+	box-shadow: 0px 3px 3px -3px;
+	text-align: center;
+	border-radius: 6px;
+	cursor: pointer;
+
+	.timeline-controls-thingy {
+		width: 10px;
+		height: 10px;
+		border-top: 1px solid #eee;
+		border-left: 1px solid #eee;
+		transform: rotate(45deg);
+		margin: auto;
+		margin-top: -6px;
+		background-color: white;
+	}
+
+	.timeline-controls-padder {
+		background-color: transparent;
+		height: 8px;
+		margin-top: -8px;
+	}
+
+	.timeline-controls-time {
+		margin-top: 3px;
+		font-size: 0.8em;
+		color: #A9A9A9;
+		text-shadow: 0px 1px white;
+		background-color: #F7F7F7;
+		padding-bottom: 1px;
+		border-top: 1px solid #E8E8E8;
+		border-radius: 0px 0px 6px 6px;
+	}
+
+	.timeline-controls-icon {
+		font-size: 1.2em;
+		margin: 4px 0px 3px;
+		text-shadow: 0px 1px white, 0px -1px #676767;
+		color: #C3C3C3;
+	}
+}
+
+.timeline-controls:hover {
+	display: block !important;
+}

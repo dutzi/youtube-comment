@@ -21,6 +21,18 @@
 			ng-show="isHoveringProgressBar && !isScrubbing"></div>
 	</div>
 
+	<div class="timeline-controls" 
+		ng-show="isHoveringProgressBar && !isScrubbing" 
+		ng-style="timelineControlsStyle">
+
+		<div class="timeline-controls-padder"></div>
+		<div class="timeline-controls-thingy"></div>
+
+		<i class="fa fa-plus timeline-controls-icon"></i>
+
+		<div class="timeline-controls-time">{{ hoveredTime | time }}</div>
+	</div>
+
 	<div class="ticks" style="width: {{ segments.length * 300 }}px"></div>
 
 	<div class="segment" ng-repeat="segment in segments track by $index">

@@ -135,6 +135,13 @@ angular.module('youtubeCommentApp').controller('WatchCtrl', function (
 				width: playProgressWidth - absX + 'px'
 			}
 		}
+
+		$scope.timelineControlsStyle = {
+			left: pageX + 'px'
+		}
+
+		$scope.hoveredTime = Math.floor(absX / $scope.progressBarWidth *
+			player.getDuration());
 	}
 
 	$scope.onProgressMouseDown = function(e) {

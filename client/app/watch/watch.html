@@ -9,6 +9,7 @@
 
 	<div class="timeline-progress-bar" 
 		style="width: {{ progressBarWidth }}px" 
+		ng-mousedown="onProgressMouseDown($event)"
 		ng-mousemove="onProgressMouseMove($event)"
 		ng-mouseover="onProgressMouseOver($event)"
 		ng-mouseout="onProgressMouseOut($event)">
@@ -17,7 +18,7 @@
 		<div class="load-progress" style="width: {{ video.loadProgress }}%"></div>
 		<div class="play-progress" style="width: {{ video.playProgress }}%"></div>
 		<div class="hover-progress" ng-style="progressBarHoverStyle" 
-			ng-show="isHoveringProgressBar"></div>
+			ng-show="isHoveringProgressBar && !isScrubbing"></div>
 	</div>
 
 	<div class="ticks" style="width: {{ segments.length * 300 }}px"></div>

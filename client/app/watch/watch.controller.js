@@ -127,7 +127,7 @@ angular.module('youtubeCommentApp').controller('WatchCtrl', function (
 		}
 	}
 
-	var pageX
+	var pageX;
 	function updateProgressBarHoverPosition() {
 		var absX = $('.segments').scrollLeft + pageX,
 		    playProgressWidth = $('.play-progress').offsetWidth;
@@ -143,6 +143,38 @@ angular.module('youtubeCommentApp').controller('WatchCtrl', function (
 				width: playProgressWidth - absX + 'px'
 			}
 		}
+	}
+
+	$scope.onProgressMouseDown = function(e) {
+		$scope.isScrubbing = true;
+		player.pauseVideo();
+		document.body.classList.add('noselect');
+
+		function seekByPageX(pageX) {
+			var absX = $('.segments').scrollLeft + pageX,
+			    percentage = absX / $scope.progressBarWidth;
+
+			player.seekTo(percentage * player.getDuration());
+		}
+
+		function onMouseUp(e) {
+			$scope.isScrubbing = false;
+			player.playVideo();
+			$scope.$digest();
+
+			seekByPageX(e.pageX);
+
+			document.body.classList.remove('noselect');
+			document.removeEventListener('mouseup', onMouseUp);
+			document.removeEventListener('mousemove', onMouseMove);
+		}
+
+		function onMouseMove(e) {
+			seekByPageX(e.pageX);
+		}
+
+		document.addEventListener('mouseup', onMouseUp);
+		document.addEventListener('mousemove', onMouseMove);
 	}
 
 	$scope.onProgressMouseMove = function(e) {

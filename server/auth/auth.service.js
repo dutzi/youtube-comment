@@ -66,7 +66,9 @@ function signToken(id) {
 function setTokenCookie(req, res) {
   if (!req.user) return res.status(404).json({ message: 'Something went wrong, please try again.'});
   var token = signToken(req.user._id, req.user.role);
+  res.cookie('serviceToken', JSON.stringify(req.user.google.token));
   res.cookie('token', JSON.stringify(token));
+  console.log('Setting token to ' + req.user.google.token);
   res.redirect('/');
 }
 

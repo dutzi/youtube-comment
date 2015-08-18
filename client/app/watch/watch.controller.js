@@ -19,7 +19,8 @@ angular.module('youtubeCommentApp').controller('WatchCtrl', function (
 	$scope.segmentDuration = 30;
 
 	$scope.video = {
-		id     : $location.search().v || 'fUwnA4-cfiA',
+		// id     : $location.search().v || 'fUwnA4-cfiA',
+		id     : 'edqH0ofRQrM',
 		width  : 640,
 		height : 360
 	};
@@ -260,19 +261,16 @@ angular.module('youtubeCommentApp').controller('WatchCtrl', function (
 		}, 10);
 	};
 
-	$http.post('https://www.googleapis.com/youtube/v3/commentThreads?part=snippet&key=AIzaSyCnvekvymQwGgtRuntaqAF_jzuzwJHvNkM', {
-		snippet: {
-			channelId: 'UCYAEvz0DhNrn4V35kxNXH3w',
-			videoId: 'fUwnA4-cfiA',
-			topLevelComment: {
-				snippet: {
-					textOriginal: 'Test API post comment'
-				}
-			}
-		}
-	}).then(function (res) {
-		console.log(res);
-	}, function (err) {
-		console.log(err);
-	});
+	// youtube.postComment({
+	// 	channelId: 'UCNQNBZZ2BnnYCurZHAyhNww',
+	// 	videoId: 'fUwnA4-cfiA',
+	// 	text: 'heeyeyyeye'
+	// }).then(function (res) {
+	// 	console.log('comment posted', res);
+	// });
+	// $http.get('/auth/google/test').then(function (res) {
+	// 	console.log(res);
+	// }, function (err) {
+	// 	console.log(err);
+	// });
 });

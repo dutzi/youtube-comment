@@ -19,6 +19,27 @@ angular.module('youtubeCommentApp').service('youtube', function (
 					key: KEY
 				}
 			});
+		},
+		postComment(options) {
+			return $http({
+				method: 'POST',
+				url: `${baseUrl}commentThreads`,
+				params: {
+					part: 'snippet',
+					key: KEY
+				},
+				data: {
+					snippet: {
+						videoId: options.videoId,
+						channelId: options.channelId,
+						topLevelComment: {
+							snippet: {
+								textOriginal: options.text
+							}
+						}
+					}
+				}
+			});
 		}
 	}
 });

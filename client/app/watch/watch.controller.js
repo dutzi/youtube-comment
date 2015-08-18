@@ -5,6 +5,8 @@ angular.module('youtubeCommentApp').controller('WatchCtrl', function (
 	$location,
 	$q,
 	$interval,
+	$timeout,
+	$http,
 	youtube
 ) {
 	var $ = document.querySelector.bind(document);
@@ -250,4 +252,27 @@ angular.module('youtubeCommentApp').controller('WatchCtrl', function (
 		document.addEventListener('mouseup', onMouseUp);
 		document.body.classList.add('noselect');
 	}
+
+	$scope.onAddCommentClick = function () {
+		$scope.shouldHideTimelineControls = true;
+		$timeout(function () {
+			$scope.shouldHideTimelineControls = false;
+		}, 10);
+	};
+
+	$http.post('https://www.googleapis.com/youtube/v3/commentThreads?part=snippet&key=AIzaSyCnvekvymQwGgtRuntaqAF_jzuzwJHvNkM', {
+		snippet: {
+			channelId: 'UCYAEvz0DhNrn4V35kxNXH3w',
+			videoId: 'fUwnA4-cfiA',
+			topLevelComment: {
+				snippet: {
+					textOriginal: 'Test API post comment'
+				}
+			}
+		}
+	}).then(function (res) {
+		console.log(res);
+	}, function (err) {
+		console.log(err);
+	});
 });

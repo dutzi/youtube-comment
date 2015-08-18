@@ -178,4 +178,10 @@
 
 .timeline-controls:hover {
 	display: block !important;
+
+	.timeline-controls-icon {
+		transform: scale(1.4);
+		transition: all 0.3s;
+		color: #1EB9FF;
+	}
 }

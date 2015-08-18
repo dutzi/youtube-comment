@@ -6,5 +6,6 @@ public
 client/bower_components
 dist
 /server/config/local.env.js
+/server/certs
 npm-debug.log
 data

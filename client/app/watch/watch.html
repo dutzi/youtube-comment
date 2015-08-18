@@ -23,6 +23,8 @@
 
 	<div class="timeline-controls" 
 		ng-show="isHoveringProgressBar && !isScrubbing" 
+		ng-if="!shouldHideTimelineControls"
+		ng-click="onAddCommentClick()" 
 		ng-style="timelineControlsStyle">
 
 		<div class="timeline-controls-padder"></div>

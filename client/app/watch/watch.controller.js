@@ -7,6 +7,7 @@ angular.module('youtubeCommentApp').controller('WatchCtrl', function (
 	$interval,
 	$timeout,
 	$http,
+	Auth,
 	youtube
 ) {
 	var $ = document.querySelector.bind(document);
@@ -18,6 +19,23 @@ angular.module('youtubeCommentApp').controller('WatchCtrl', function (
 	$scope.windowHeight = window.innerHeight;
 	$scope.segmentDuration = 30;
 
+	(function initUserData() {
+		var userData = Auth.getCurrentUser();
+		$scope.userData = {
+			name: userData.google.displayName,
+			url: userData.google.url,
+			image: userData.google.image.url
+		};
+	}());
+
+	// Auth.getCurrentUser().then(function (res) {
+	// 	debugger;
+	// 	$scope.userData = {
+	// 		name: userData.google.displayName,
+	// 		image: userData.google.image.url
+	// 	};
+	// });
+
 	$scope.video = {
 		// id     : $location.search().v || 'fUwnA4-cfiA',
 		id     : 'edqH0ofRQrM',
@@ -25,22 +43,24 @@ angular.module('youtubeCommentApp').controller('WatchCtrl', function (
 		height : 360
 	};
 
-	function getTime(time) {
-		var hours = 0;
+	var utils = {
+		getTime(time) {
+			var hours = 0;
 
-		return time.match(/(?:(\d+)h|)(\d+)m(\d+)s/)
-			.filter((_, index) => index >= 2)
-			.map((d) => parseInt(d))
-			.reverse()
-			.reduce((prev, current, index) => {
-				return prev + current * Math.pow(60, index);
-			});
-	}
+			return time.match(/(?:(\d+)h|)(\d+)m(\d+)s/)
+				.filter((_, index) => index >= 2)
+				.map((d) => parseInt(d))
+				.reverse()
+				.reduce((prev, current, index) => {
+					return prev + current * Math.pow(60, index);
+				});
+		},
 
-	function getSegment(time) {
-		return $scope.segments[Math.floor(time / $scope.segmentDuration)];
-	}
-	
+		getSegment(time) {
+			return $scope.segments[Math.floor(time / $scope.segmentDuration)];
+		}
+	};
+
 	$q.all([
 		youtube.getComments($scope.video.id),
 		playerReady.promise
@@ -58,7 +78,7 @@ angular.module('youtubeCommentApp').controller('WatchCtrl', function (
 				var time = text.substr(text.indexOf(timeRx) + timeRx.length);
 				time = time.substr(0, time.indexOf('"'));
 
-				getSegment(getTime(time)).push(data[i]);
+				utils.getSegment(utils.getTime(time)).push(data[i]);
 			}
 		}
 
@@ -254,11 +274,25 @@ angular.module('youtubeCommentApp').controller('WatchCtrl', function (
 		document.body.classList.add('noselect');
 	}
 
+	/******************************/
+	/******* Comment Posting ******/
+	/******************************/
+
 	$scope.onAddCommentClick = function () {
 		$scope.shouldHideTimelineControls = true;
 		$timeout(function () {
 			$scope.shouldHideTimelineControls = false;
 		}, 10);
+
+		var segment = utils.getSegment($scope.hoveredTime);
+		segment.push({
+			snippet: { topLevelComment: { snippet: {
+				authorDisplayName          : $scope.userData.name,
+				authorProfileImageUrl      : $scope.userData.image,
+				authorGoogleplusProfileUrl : $scope.userData.url,
+				textDisplay                : ''
+			}}}
+		});
 	};
 
 	// youtube.postComment({
